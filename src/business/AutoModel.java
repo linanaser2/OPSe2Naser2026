@@ -1,47 +1,66 @@
-
-
 package business;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
+	import java.io.BufferedWriter;
+	import java.io.FileWriter;
+	import java.io.IOException;
 
-public class AutoModel {
+import fileCreatorsNaser.ReaderProductNaser;
+import fileCreatorsNaser.ConcreateCreatorCsvTxt; 
+import fileCreatorsNaser.ReaderCreatorNaser; 
 
-    private Auto auto;
+	
 
-    public AutoModel() {
-    }
 
-    public Auto getAuto() {
-        return auto;
-    }
+	public class AutoModel {
 
-    public void setAuto(Auto auto) {
-        this.auto = auto;
-    }
+	    private Auto auto;
+	    
+	    
 
-    public void leseAusDatei() throws IOException{
-        
-            BufferedReader ein = new BufferedReader(new FileReader("Autos.csv"));
-            String[] zeile = ein.readLine().split(";");
-            this.auto = new Auto(
-                zeile[0],
-                zeile[1],
-                zeile[2],
-                Float.parseFloat(zeile[3]),
-                zeile[4].split("_"));
-            	ein.close();
-         
-    }
+	    public AutoModel() {
+	    }
 
-    public void schreibeAutosInCsvDatei() throws IOException {
-        BufferedWriter aus = new BufferedWriter(
-            new FileWriter("AutosAusgabe.csv", true));
+	    public Auto getAuto() {
+	        return auto;
+	    }
 
-        aus.write(this.auto.gibAutoZurueck(';'));
-        aus.close();
-    }
-}
+	    public void setAuto(Auto auto) {
+	        this.auto = auto;
+	    }
+
+	    public void leseAusDatei(String typ) throws IOException {
+	    	ReaderCreatorNaser creator;
+	    	ReaderProductNaser product;
+
+	        creator = new ConcreateCreatorCsvTxt();
+	        
+	        product = creator.factoryMethod(typ);
+	        try {
+	            String[] zeile = product.leseAusDatei();
+
+	            this.auto = new Auto(
+	                    zeile[0],
+	                    zeile[1],
+	                    zeile[2],
+	                    Float.parseFloat(zeile[3]),
+	                    zeile[4].split("_")
+	            );
+
+	        } finally {
+	            product.schliesseDatei();
+	        }
+	    }
+
+	    public void schreibeAutosInCsvDatei() throws IOException {
+
+	        BufferedWriter aus = new BufferedWriter(
+	                new FileWriter("AutosAusgabe.csv", true));
+
+	        aus.write(this.auto.gibAutoZurueck(';'));
+
+	        aus.close();
+	    }
+	}
+
+
+

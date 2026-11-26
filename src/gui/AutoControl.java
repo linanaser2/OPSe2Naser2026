@@ -44,14 +44,38 @@ public class AutoControl {
         }
     }
 
+    
+    
+    
+    
     public void leseAusDatei(String typ) {
+
         try {
-            if ("csv".equals(typ)) {
+            this.model.leseAusDatei(typ);
+
+            this.view.zeigeInformationsfensterAn(
+                    "Die Autos wurden gelesen!");
+
+        } catch (IOException exc) {
+
+            this.view.zeigeFehlermeldungsfensterAn(
+                    "IOException beim Lesen!");
+
+        } catch (Exception exc) {
+
+            this.view.zeigeFehlermeldungsfensterAn(
+                    "Unbekannter Fehler beim Lesen!");
+        }
+    }
+   /* public void leseAusDatei(String typ) {
+        try {
+        	
+         //   if ("csv".equals(typ)) {
                 this.model.leseAusDatei();
 
                 this.view.zeigeInformationsfensterAn(
                     "Die Autos wurden gelesen!");
-            } else {
+           /* } else {
                 this.view.zeigeInformationsfensterAn(
                     "Noch nicht implementiert!");
             }
@@ -62,7 +86,7 @@ public class AutoControl {
             this.view.zeigeFehlermeldungsfensterAn(
                 "Unbekannter Fehler beim Lesen!");
         }
-    }
+    }*/
 
     public void schreibeAutosInCsvDatei() {
         try {
